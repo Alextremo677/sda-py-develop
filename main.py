@@ -1,4 +1,5 @@
 import signal
+from urllib import response
 from serial import Serial
 from time import sleep
 from queue import Queue
@@ -36,11 +37,27 @@ pd = ProportionalDerivativeController(kp=1, kd=0.1)
 while True:
     if not input_queue.empty():
         values = data_parser(data=input_queue.get(), map=sensor_map)
+        print("************************************")
         for value in values:
-            print(f"{value.name} Sensor: {value.value} with key {hex(value.key)}")
+            #print(f"{value.name} Sensor: {value.value} with key {hex(value.key)}")
             if value.key == 0xA6:
+                """
                 requests.post(
-                    url="http://0.0.0.0:8080/temperature",
-                    json={"value": value.value}
-                )
+                        url="http://127.0.0.1:8000/temperature",
+                        json={"value": value.value}
+                    )
+                """
+                respons = requests.get("http://127.0.0.1:8000")
+                print(respons)
+                
+                """
+                try:
+                    requests.post(
+                        url="http://127.0.0.1:8080/temperature",
+                        json={"value": value.value}
+                    )
+                except Exception as e:
+                    print(e)
+                print(value)
+                """
     sleep(0.01)
