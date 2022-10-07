@@ -41,12 +41,12 @@ while True:
         for value in values:
             #print(f"{value.name} Sensor: {value.value} with key {hex(value.key)}")
             if value.key == 0xA6:
-                """
+                
                 requests.post(
                         url="http://127.0.0.1:8000/temperature",
                         json={"value": value.value}
                     )
-                """
+                
                 respons = requests.get("http://127.0.0.1:8000")
                 print(respons)
                 
