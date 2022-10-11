@@ -40,6 +40,29 @@ while True:
         for value in values:
             print(f"{value.name} Sensor: {value.value} with key {hex(value.key)}")
             if value.key == 0xA6:
+<<<<<<< Updated upstream
                 print(pd.calculate(value.value))
 
     sleep(0.01)
+=======
+                
+                requests.get(
+                        url="http://127.0.0.1:7800/temperature",
+                        json={"value": value.value}
+                    )
+                
+                respons = requests.get("http://127.0.0.1:7800")
+                print(respons)
+                
+                """
+                try:
+                    requests.post(
+                        url="http://127.0.0.1:8080/temperature",
+                        json={"value": value.value}
+                    )
+                except Exception as e:
+                    print(e)
+                print(value)
+                """
+    sleep(0.01)
+>>>>>>> Stashed changes
