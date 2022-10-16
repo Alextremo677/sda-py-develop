@@ -8,6 +8,13 @@ from settings import Settings
 from llp import LLP, data_parser
 from controllers.pd import ProportionalDerivativeController
 
+
+#**************************************
+import puntero
+#from puntero import main, tick, setup, clockface, make_hand_shape, hand, jump
+#**************************************
+
+
 import requests
 
 settings = Settings()
@@ -31,26 +38,38 @@ signal.signal(signal.SIGINT, handler)
 
 llp.start()
 
-sensor_map = {0xA6: "Temperature", 0x9C: "Preasure"}
+sensor_map = {0xA6: "Serv1", 0x9C: "Serv2"}
 pd = ProportionalDerivativeController(kp=1, kd=0.1)
 
 while True:
     if not input_queue.empty():
         values = data_parser(data=input_queue.get(), map=sensor_map)
-        print("************************************")
+        
         for value in values:
             #print(f"{value.name} Sensor: {value.value} with key {hex(value.key)}")
             if value.key == 0xA6:
-                
+                print("serv1: ",value.value)
+                a=value.value
                 requests.post(
-                        url="http://127.0.0.1:8000/temperature",
+                        url="http://127.0.0.1:8090/serv1",
                         json={"value": value.value}
                     )
-                
+                    
+            if value.key == 0x9C:
+                print("Serv2: ",value.value)
+                b=value.value
+                requests.post(
+                        url="http://127.0.0.1:8090/serv2",
+                        json={"value": value.value}
+                    )
+
+                puntero.main(a,b)
+
+                """
                 respons = requests.get("http://127.0.0.1:8000")
                 print(respons)
                 
-                """
+                
                 try:
                     requests.post(
                         url="http://127.0.0.1:8080/temperature",
