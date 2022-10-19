@@ -38,6 +38,7 @@ def pid_serv1(serv1: Serv1):
 @app.get("/serv1")
 def get_serv1():
     return servo1.pop(0) if len(servo1) > 0 else []
+    
     #return {"Hello": "World", "UTC": datetime.utcnow()}
 
 
