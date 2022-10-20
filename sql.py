@@ -16,10 +16,8 @@ def createTable():
     cursor = conn.cursor()
     cursor.execute(
         """CREATE TABLE DBservos (
-            Motor1 text,
-            Angulo1 integer,
-            Motor2 text,
-            Angulo2 integer
+            Servo1 integer,
+            Servo2 integer
         )"""
     )
     conn.commit()
@@ -37,7 +35,7 @@ def insertRow(Motor1, Angulo1, Motor2, Angulo2):
 def insertRows(DBservosList):
     conn = sql.connect("DBservos.db")
     cursor = conn.cursor()
-    instruccion = f"INSERT INTO DBservos VALUES(?, ?, ?, ?)"
+    instruccion = f"INSERT INTO DBservos VALUES(?, ?)"
     cursor.executemany(instruccion, DBservosList)
     conn.commit()
     conn.close()
@@ -51,8 +49,6 @@ def readRow():
     conn.commit()
     conn.close()
     print(datos)
-
-
 
 def deleteTable():
     conn = sql.connect("DBservos.db")
@@ -73,20 +69,18 @@ def search():
     conn.close()
     print(datos)
 
-
 def get_last():
     conn = sql.connect("DBservos.db")
     cursor = conn.cursor()
     res = cursor.execute('SELECT * FROM DBservos')
     return res.fetchall()[-1]
 
-
 if __name__ == "__main__":
-    deleteTable()
     #createDB()
     #createTable()
+    deleteTable()
     DBservos = [
-        (a , c, b , d)
+        (c, d)
     ]
     insertRows(DBservos)
     readRow()
