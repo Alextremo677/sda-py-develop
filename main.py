@@ -8,7 +8,10 @@ from settings import Settings
 from llp import LLP, data_parser
 from controllers.pd import ProportionalDerivativeController
 
+from dis import Instruction
+import sqlite3 as sql
 
+from sql import createDB, createTable, deleteTable, insertRow, insertRows, readRow, deleteTable, search, get_last
 #**************************************
 import puntero
 #from puntero import main, tick, setup, clockface, make_hand_shape, hand, jump
@@ -16,6 +19,12 @@ import puntero
 
 
 import requests
+
+a= "Servo 1"
+b = "Servo 2"
+c = 0
+d = 0
+
 
 settings = Settings()
 
@@ -41,6 +50,8 @@ llp.start()
 sensor_map = {0xA6: "Serv1", 0x9C: "Serv2"}
 pd = ProportionalDerivativeController(kp=1, kd=0.1)
 
+
+deleteTable()
 while True:
     if not input_queue.empty():
         values = data_parser(data=input_queue.get(), map=sensor_map)
@@ -48,23 +59,35 @@ while True:
         for value in values:
             #print(f"{value.name} Sensor: {value.value} with key {hex(value.key)}")
             if value.key == 0xA6:
-                print("serv1: ",value.value)
-                a=value.value
+                #print("serv1: ",value.value)
+                c=value.value
                 requests.post(
                         url="http://127.0.0.1:8090/serv1",
                         json={"value": value.value}
                     )
                     
             if value.key == 0x9C:
-                print("Serv2: ",value.value)
-                b=value.value
+                #print("Serv2: ",value.value)
+                d=value.value
                 requests.post(
                         url="http://127.0.0.1:8090/serv2",
                         json={"value": value.value}
                     )
 
-                puntero.main(a,b)
 
+                #puntero.main(a,b)
+
+
+                DBservos = [(a , c, b , d)]
+                insertRows(DBservos)
+                #readRow()
+
+
+
+                #search()
+                print(get_last()[1])
+
+                
                 """
                 respons = requests.get("http://127.0.0.1:8000")
                 print(respons)

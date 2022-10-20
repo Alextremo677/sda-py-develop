@@ -30,7 +30,7 @@ def read_root():
 """
 @app.post("/serv1")
 def pid_serv1(serv1: Serv1):
-    response = {"value": serv1.value, "time": datetime.utcnow()}
+    response = {"value": serv1.value}
     servo1.append(response)
     return response
     #return {"Hello222": "World", "UTC": datetime.utcnow()}
@@ -46,7 +46,7 @@ def get_serv1():
 #---------------------------------------------------------------------------------
 @app.post("/serv2")
 def pid_serv2(serv2: Serv2):
-    response = {"value": serv2.value, "time": datetime.utcnow()}
+    response = {"value": serv2.value}
     servo2.append(response)
     return response
     #return {"Hello222": "World", "UTC": datetime.utcnow()}
